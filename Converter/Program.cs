@@ -11,6 +11,7 @@ namespace Converter
 
         static void Main(string[] args)
         {
+            //test pull request
             const byte ZeroAnscii = 48;
             const byte NineAnscii = 57;
             const byte AAnscii = 65;
@@ -56,7 +57,7 @@ namespace Converter
         const byte EAnscii = 69; const byte eAnscii = 101;
         const byte FAnscii = 70; const byte fAnscii = 102;
 
-        public int ConvertHexToDec (string input_hex)
+        public int ConvertHexToDec(string input_hex)
         {
             char[] char_input = input_hex.ToCharArray();
             byte[] AnsciiInput = Encoding.ASCII.GetBytes(input_hex);
@@ -106,11 +107,12 @@ namespace Converter
             string OutputBinary = "";
             for (int i = Output.Length; i >= 0; i--)
             {
-                OutputBinary = (OutputChar[i]);
+                OutputBinary = (OutputChar[i]);}
             }
 
             return OutputBinary;
         }*/
             return Output;
+        }
     }
 }
