@@ -9,38 +9,40 @@ namespace Converter
         //The programm takes the number in Hex system and convert it in decimal and binary ones
         static void Main(string[] args)
         {
-            ANSCII_Variables HexANSCII = new ANSCII_Variables();
-            byte ZEROANSCII = HexANSCII.ANSCII_Zero();
-            byte NineANSCII = HexANSCII.ANSCII_Nine();
-            byte AANSCII = HexANSCII.ANSCII_A();
-            byte FANSCII = HexANSCII.ANSCII_F();
+            AnsciiVariables HexANSCII = new AnsciiVariables();
+            byte zeroANSCII = HexANSCII.AnsciiZero();
+            byte nineANSCII = HexANSCII.AnsciiNine();
+            byte aANSCII = HexANSCII.AnsciiLetterA();
+            byte fANSCII = HexANSCII.AnsciiLetterF();
                         
             bool isHex = false;
-            string Hexinput = string.Empty;
+            string hexInput = string.Empty;
 
             while (isHex == false)
             {
                 Console.Write("Please enter the correct number in hexadecimal system: 0x");
-                string Input = Console.ReadLine();
-                Hexinput = Input.ToUpper();
+
+                string input = Console.ReadLine();
+                hexInput = input.ToUpper();
 
                 // Validate, if entered value is in Hex
-                byte[] AnsciiCode = Encoding.ASCII.GetBytes(Hexinput);
+                byte[] ANSCIICode = Encoding.ASCII.GetBytes(hexInput);
                 isHex = true;
-                foreach (byte symbol in AnsciiCode)
+
+                foreach (byte symbol in ANSCIICode)
                 {
-                    if ((symbol < ZEROANSCII || (symbol > NineANSCII && symbol < AANSCII) || symbol > FANSCII))
+                    if ((symbol < zeroANSCII || (symbol > nineANSCII && symbol < aANSCII) || symbol > fANSCII))
                         isHex = false;
                         break;
                 }
             }
 
             ConversionMethods Conversion = new ConversionMethods();
-            string input_dec = Conversion.ConvertHexToDec(Hexinput);
-            Console.WriteLine("Your number in decimal: " + input_dec);
+            string inputDec = Conversion.ConvertHexToDec(hexInput);
+            Console.WriteLine("Your number in decimal: " + inputDec);
 
-            string input_bin = Conversion.ConvertDecToBinary(Hexinput);
-            Console.WriteLine("Your number in binary: " + input_bin);
+            string inputBin = Conversion.ConvertDecToBinary(hexInput);
+            Console.WriteLine("Your number in binary: " + inputBin);
             Console.ReadLine();
         }
     }
@@ -52,116 +54,114 @@ namespace Converter
 
             //Method to convert Hex number to Dec
         {
-            ANSCII_Variables HexANSCII = new ANSCII_Variables();
-            byte ZEROANSCII = HexANSCII.ANSCII_Zero();
-            byte NineANSCII = HexANSCII.ANSCII_Nine();
-            byte AANSCII = HexANSCII.ANSCII_A();
-            byte BANSCII = HexANSCII.ANSCII_B();
-            byte CANSCII = HexANSCII.ANSCII_C();
-            byte DANSCII = HexANSCII.ANSCII_D();
-            byte EANSCII = HexANSCII.ANSCII_E();
-            byte FANSCII = HexANSCII.ANSCII_F();
-            byte Difference = 7;
+            AnsciiVariables HexANSCII = new AnsciiVariables();
+            byte zeroANSCII = HexANSCII.AnsciiZero();
+            byte nineANSCII = HexANSCII.AnsciiNine();
+            byte aANSCII = HexANSCII.AnsciiLetterA();
+            byte bANSCII = HexANSCII.AnsciiLetterB();
+            byte cANSCII = HexANSCII.AnsciiLetterC();
+            byte dANSCII = HexANSCII.AnsciiLetterD();
+            byte eANSCII = HexANSCII.AnsciiLetterE();
+            byte fANSCII = HexANSCII.AnsciiLetterF();
+            const byte differenceToConvertDec = 7;
+            const int differenceFromAToZero = 15;
+            const int multiplierInDecConversion = 16;
 
-            byte[] AnsciiInput = Encoding.ASCII.GetBytes(input_hex);
-            int[] int_input = new int [AnsciiInput.Length];
+
+            byte[] inputANSCII = Encoding.ASCII.GetBytes(input_hex);
+            int[] intInput = new int [inputANSCII.Length];
 
             //Transform letters in Hex into numbers in Dec
-            for (int i = 0; i < int_input.Length; i++)
+            for (int i = 0; i < intInput.Length; i++)
             {
-                int_input[i] = AnsciiInput[i] - ZEROANSCII;
-                if (int_input[i] > 15)
+                intInput[i] = inputANSCII[i] - zeroANSCII;
+                if (intInput[i] > differenceFromAToZero)
                 {
-                    int_input[i] = int_input[i] - Difference;
+                    intInput[i] = intInput[i] - differenceToConvertDec;
                 }
             }
   
-            Array.Reverse(int_input);
-            int Intoutput = 0;
-            int Multiplier = 16;
-            double Multiple;
+            Array.Reverse(intInput);
+            int intOutput = 0;
 
-            for (int i = 0; i < int_input.Length; i++)
+            for (int i = 0; i < intInput.Length; i++)
             {
-                Multiple = Math.Pow (Multiplier, i);
-                int MultipleInt = Convert.ToInt32(Multiple);
-                Intoutput = (Intoutput + (int_input[i] * MultipleInt));
-                Multiplier = 16;
+                intOutput = (intOutput + (intInput[i] * (int)Math.Pow(multiplierInDecConversion, i)));
             }
 
-            string Output = Intoutput.ToString();
-            return Output;
+            string output = intOutput.ToString();
+            return output;
          }
 
         public string ConvertDecToBinary (string input_hex)
         //Method to convert Dec number to Bin
         {
             ConversionMethods DecToBinary = new ConversionMethods();
-            string str_input_dec = DecToBinary.ConvertHexToDec(input_hex);
-            int input_dec = Convert.ToInt32(str_input_dec);
-            int leftover = input_dec;
+            string strInputDec = DecToBinary.ConvertHexToDec(input_hex);
+            int intInputDec = Convert.ToInt32(strInputDec);
+            int leftover = intInputDec;
             int temp = 0;
-            string Output = string.Empty;
+            string output = string.Empty;
 
             while (leftover > 0)
             {
                 temp = leftover % 2;
                 leftover = leftover / 2;
-                Output = Output + temp;
+                output = output + temp;
             }
            
-            char[] OutputChar = Output.ToArray();
-            string OutputBinary = string.Empty;
-            for (int i = Output.Length - 1; i >= 0; i--)
+            char[] charBinConvert = output.ToArray();
+            string strBinConvrt = string.Empty;
+            for (int i = output.Length - 1; i >= 0; i--)
             {
-                OutputBinary = OutputBinary + OutputChar[i].ToString();
+                strBinConvrt = strBinConvrt + charBinConvert[i].ToString();
             }
 
-            return OutputBinary;
+            return strBinConvrt;
         }
     }
 
-    class ANSCII_Variables
+    class AnsciiVariables
     {
-        public byte ANSCII_Zero()
+        public byte AnsciiZero()
         {
-            const byte ZeroANSCII = 48;
-            return ZeroANSCII;
+            const byte zeroANSCII = 48;
+            return zeroANSCII;
         }
-        public byte ANSCII_Nine()
+        public byte AnsciiNine()
         {
-            const byte NineANSCII = 57;
-            return NineANSCII;
+            const byte nineANSCII = 57;
+            return nineANSCII;
         }
-        public byte ANSCII_A()
+        public byte AnsciiLetterA()
         {
-            const byte AANSCII = 65;
-            return AANSCII;
+            const byte aANSCII = 65;
+            return aANSCII;
         }
-        public byte ANSCII_B()
+        public byte AnsciiLetterB()
         {
-            const byte BANSCII = 66;
-            return BANSCII;
+            const byte bANSCII = 66;
+            return bANSCII;
         }
-        public byte ANSCII_C()
+        public byte AnsciiLetterC()
         {
-            const byte CANSCII = 67;
-            return CANSCII;
+            const byte cANSCII = 67;
+            return cANSCII;
         }
-        public byte ANSCII_D()
+        public byte AnsciiLetterD()
         {
-            const byte DANSCII = 68;
-            return DANSCII;
+            const byte dANSCII = 68;
+            return dANSCII;
         }
-        public byte ANSCII_E()
+        public byte AnsciiLetterE()
         {
-            const byte EANSCII = 69;
-            return EANSCII;
+            const byte eANSCII = 69;
+            return eANSCII;
         }
-        public byte ANSCII_F()
+        public byte AnsciiLetterF()
         {
-            const byte FANSCII = 70;
-            return FANSCII;
+            const byte fANSCII = 70;
+            return fANSCII;
         }        
     }
 }
